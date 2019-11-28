@@ -1,12 +1,12 @@
 {
-  "name": "translation-tool-v2",
+  "name": "desktop-to-translate",
   "version": "1.0.0",
   "main": "main.js",
   "build": {
-    "appId": "your.id",
+    "appId": "desktop.to.translate",
     "mac": {
       "target": "dmg",
-      "category": "your.app.category.type",
+      "category": "desktop.translation",
       "identity": null,
       "extendInfo": {
         "LSUIElement": 1
