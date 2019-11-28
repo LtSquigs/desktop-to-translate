@@ -12,6 +12,7 @@ class Configuration {
       this.config = JSON.parse(fs.readFileSync(this.configFile).toString())
     } catch(e) {
       this.config = JSON.parse(fs.readFileSync(path.join(app.getAppPath(), 'default.config')));
+      fs.mkdirSync(app.getPath('userData'), { recursive: true });
       fs.writeFileSync(this.configFile, JSON.stringify(this.config));
     }
 
