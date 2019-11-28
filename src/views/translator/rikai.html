@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Rikai-Kun Only</title>
+    <script src="chrome-api-polyfill.js"></script>
+    <script src="rikaikun/data.js"></script>
+    <script src="rikaikun/rikaichan.js"></script>
+    <script src="rikaikun/background.js"></script>
+    <script src="rikaikun/rikaicontent.js"></script>
+    <script type="text/javascript">
+    </script>
+  </head>
+  <body>
+    <div id='jpText'></div>
+    <script>
+      const { ipcRenderer } = require('electron');
+
+      const jpText = document.querySelector('#jpText');
+
+      jpText.innerText =  (new URL(document.location)).searchParams.get('text');
+
+      window.onload = () => {
+        const textHeight = jpText.offsetHeight;
+
+        // This extra height here is to give space for the rikai window to show
+        ipcRenderer.send('translator-opened', textHeight + 300);
+      }
+
+      const config = ipcRenderer.sendSync('get-config');
+
+      rcxMain.config.showOnKey = config.rikaiHotkey;
+      rcxMain.config.minihelp = false;
+
+      rcxMain.inlineToggle({ id: 0 });
+    </script>
+  </body>
+</html>

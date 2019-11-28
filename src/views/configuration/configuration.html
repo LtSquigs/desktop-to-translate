@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css"></link>
+  </head>
+  <body>
+    <div class="container mt-3">
+      <h2>Settings</h2>
+      <form>
+        <div class="form-group form-row">
+          <label for="scan-hotkey" class="col-3 col-form-label">Horizontal Hotkey</label>
+          <div class="col-6">
+            <input type="text" class="form-control" id="scan-hotkey" placeholder="" disabled>
+          </div>
+          <div class="col-3">
+            <button type="submit" class="btn btn-primary" id="scan-hotkey-button">Record</button>
+            <button type="submit" class="btn btn-danger" id="scan-hotkey-delete">Delete</button>
+          </div>
+          <div class="col-9 offset-3">
+            <small class="form-text text-muted">
+              Must be Alt/Ctrl/Opt/Cmd + Letter/Number/F1-12
+            </small>
+          </div>
+        </div>
+        <div class="form-group form-row">
+          <label for="vertical-hotkey" class="col-3 col-form-label">Vertical Hotkey</label>
+          <div class="col-6">
+            <input type="text" class="form-control" id="vertical-hotkey" placeholder="" disabled>
+          </div>
+          <div class="col-3">
+            <button type="submit" class="btn btn-primary" id="vertical-hotkey-button">Record</button>
+            <button type="submit" class="btn btn-danger" id="vertical-hotkey-delete">Delete</button>
+          </div>
+          <div class="col-9 offset-3">
+            <small class="form-text text-muted">
+              Must be Alt/Ctrl/Opt/Cmd + Letter/Number/F1-12
+            </small>
+          </div>
+        </div>
+        <div class="form-group form-row">
+          <label for="view-selector" class="col-3 col-form-label">View Mode</label>
+          <div class="col-9">
+            <select id="view-selector" class="custom-select">
+              <option value="google+rikai">Google Translate (w/ Rikaikun)</option>
+              <option value="google">Google Translate (no Rikaikun)</option>
+              <option value="rikai">Rikaikun Only</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group form-row">
+          <label for="rikai-hotkey" class="col-3 col-form-label">Rikaikun Key</label>
+          <div class="col-9">
+            <select id="rikai-hotkey" class="custom-select">
+              <option value="">None</option>
+              <option value="Alt">Alt</option>
+              <option value="Ctrl">Ctrl</option>
+              <option value="Alt+Ctrl">Alt+Ctrl</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const { ipcRenderer } = require('electron');
+
+      const config = ipcRenderer.sendSync('get-config');
+
+      const codeToAccelerator = {
+        "Digit0": "0",
+        "Digit1": "1",
+        "Digit2": "2",
+        "Digit3": "3",
+        "Digit4": "4",
+        "Digit5": "5",
+        "Digit6": "6",
+        "Digit7": "7",
+        "Digit8": "8",
+        "Digit9": "9",
+        "KeyA": "A",
+        "KeyB": "B",
+        "KeyC": "C",
+        "KeyD": "D",
+        "KeyE": "E",
+        "KeyF": "F",
+        "KeyG": "G",
+        "KeyH": "H",
+        "KeyI": "I",
+        "KeyJ": "J",
+        "KeyK": "K",
+        "KeyL": "L",
+        "KeyM": "M",
+        "KeyN": "N",
+        "KeyO": "O",
+        "KeyP": "P",
+        "KeyQ": "Q",
+        "KeyR": "R",
+        "KeyS": "S",
+        "KeyT": "T",
+        "KeyU": "U",
+        "KeyV": "V",
+        "KeyW": "W",
+        "KeyX": "X",
+        "KeyY": "Y",
+        "KeyZ": "Z",
+        "F1": "F1",
+        "F2": "F2",
+        "F3": "F3",
+        "F4": "F4",
+        "F5": "F5",
+        "F6": "F6",
+        "F7": "F7",
+        "F8": "F8",
+        "F9": "F9",
+        "F10": "F10",
+        "F11": "F11",
+        "F12": "F12",
+      };
+
+      const attachRecorder = (element, setting) => {
+        const input  = document.querySelector(`#${element}`),
+              button = document.querySelector(`#${element}-button`),
+              clear  = document.querySelector(`#${element}-delete`);
+
+        let recording = false;
+
+        input.value = config[setting] || '';
+
+        const recordCombo = (event) => {
+          if (event.isComposing || event.keyCode === 229 || event.repeat) {
+            return;
+          }
+
+          // Only look for ones with alt/ctrl/etc pressed
+          if (!event.altKey && !event.ctrlKey && !event.metaKey && !event.shifKey) {
+            return;
+          }
+
+          // Look for our whitelist
+          if (!Object.keys(codeToAccelerator).includes(event.code)) {
+            return;
+          }
+
+          button.classList.remove('btn-warning');
+          button.classList.add('btn-primary');
+          button.textContent = 'Record';
+          recording = false;
+
+          document.removeEventListener('keydown', recordCombo);
+
+          let newHotkey = [];
+
+          if (event.altKey) {
+            newHotkey.push('Alt')
+          }
+
+          if (event.ctrlKey) {
+            newHotkey.push('Control')
+          }
+
+          if (event.metaKey) {
+            newHotkey.push('Command')
+          }
+
+          if (event.shiftKey) {
+            newHotkey.push('Shift')
+          }
+
+          newHotkey.push(codeToAccelerator[event.code]);
+
+          input.value = newHotkey.join('+');
+
+          ipcRenderer.send('update-config', {
+            key: setting,
+            value: newHotkey.join('+')
+          })
+        }
+
+        button.addEventListener('click', (e) => {
+          e.preventDefault();
+
+          if(recording) {
+            button.classList.remove('btn-warning');
+            button.classList.add('btn-primary');
+            button.textContent = 'Record';
+
+            document.removeEventListener('keydown', recordCombo);
+            recording = false;
+          } else {
+            button.classList.remove('btn-primary');
+            button.classList.add('btn-warning');
+            button.textContent = 'Stop';
+
+            document.addEventListener('keydown', recordCombo);
+            recording = true;
+          }
+        });
+
+        clear.addEventListener('click', (e) => {
+          e.preventDefault();
+
+          input.value = '';
+          ipcRenderer.send('update-config', {
+            key: setting,
+            value: ''
+          });
+        });
+      }
+
+      attachRecorder('scan-hotkey', 'hotkey');
+      attachRecorder('vertical-hotkey', 'verticalHotkey');
+
+      const viewMode     = config.view || 'google+rikai';
+      const viewSelector = document.querySelector('#view-selector');
+
+      for(let node of viewSelector.childNodes) {
+        if(node.tagName === 'OPTION') {
+          if (node.value === viewMode) {
+            node.selected = true;
+          }
+        }
+      }
+
+      viewSelector.addEventListener('change', (e) => {
+        const newViewMode = e.target.value;
+
+        ipcRenderer.send('update-config', {
+          key: 'view',
+          value: newViewMode
+        });
+      });
+
+      const rikaiHotkey = config.rikaiHotkey || '';
+      const rikaiHotkeySelector = document.querySelector('#rikai-hotkey');
+
+      for(let node of rikaiHotkeySelector.childNodes) {
+        if(node.tagName === 'OPTION') {
+          if (node.value === rikaiHotkey) {
+            node.selected = true;
+          }
+        }
+      }
+
+      rikaiHotkeySelector.addEventListener('change', (e) => {
+        const newRikaiHotkey = e.target.value;
+
+        ipcRenderer.send('update-config', {
+          key: 'rikaiHotkey',
+          value: newRikaiHotkey
+        });
+      });
+    </script>
+  </body>
+</html>
