@@ -4,7 +4,7 @@ const { app, BrowserWindow } = require('electron'),
       path                   = require('path');
 
 const WIDTH = 800,
-      HEIGHT = 440;
+      HEIGHT = 460;
 
 class ConfigurationWindow {
   constructor() {
