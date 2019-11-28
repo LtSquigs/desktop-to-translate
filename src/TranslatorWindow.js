@@ -1,6 +1,7 @@
 'use strict';
 const { app, BrowserWindow, ipcMain, screen } = require('electron'),
-      path = require('path');
+      path = require('path'),
+      languages  = require('../languages.json');
 
 const WIDTH = 520,
       HEIGHT = 480,
@@ -112,8 +113,11 @@ class TranslatorWindow {
       this.translatorWindow = null;
     })
 
+    const sourceLanguage = languages[this.config.readConfig('sourceLanguage')];
+    const targetLanguage = languages[this.config.readConfig('targetLanguage')];
+
     if (!rikaiMode) {
-      this.translatorWindow.loadURL('https://translate.google.com/#view=home&op=translate&sl=ja&tl=en&text=' + text);
+      this.translatorWindow.loadURL(`https://translate.google.com/#view=home&op=translate&sl=${sourceLanguage.google}&tl=${targetLanguage.google}&text=` + text);
     } else {
       this.translatorWindow.loadFile(path.join(app.getAppPath(), 'src', 'views', 'translator', 'rikai.html'), { search: 'text=' + text});
     }

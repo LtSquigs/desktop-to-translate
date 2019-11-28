@@ -4,7 +4,7 @@ const { app, BrowserWindow } = require('electron'),
       path                   = require('path');
 
 const WIDTH = 800,
-      HEIGHT = 330;
+      HEIGHT = 440;
 
 class ConfigurationWindow {
   constructor() {
@@ -22,7 +22,7 @@ class ConfigurationWindow {
       width: WIDTH,
       height: HEIGHT,
       useContentSize: true,
-      resizable: false,
+      resizable: true,
       autoHideMenuBar: true,
       webPreferences: {
         nodeIntegration: true

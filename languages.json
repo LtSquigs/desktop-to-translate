@@ -1,0 +1,352 @@
+{
+  "Afrikaans": {
+    "google": "af",
+    "tesseract": "afr"
+  },
+  "Albanian": {
+    "google": "sq",
+    "tesseract": "sqi"
+  },
+  "Amharic": {
+    "google": "am",
+    "tesseract": "amh"
+  },
+  "Arabic": {
+    "google": "ar",
+    "tesseract": "ara"
+  },
+  "Armenian": {
+    "google": "hy",
+    "tesseract": "hye"
+  },
+  "Azerbaijani": {
+    "google": "az",
+    "tesseract": "aze+aze_cyrl"
+  },
+  "Basque": {
+    "google": "eu",
+    "tesseract": "eus"
+  },
+  "Belarusian": {
+    "google": "be",
+    "tesseract": "bel"
+  },
+  "Bengali": {
+    "google": "bn",
+    "tesseract": "ben"
+  },
+  "Bosnian": {
+    "google": "bs",
+    "tesseract": "bos"
+  },
+  "Bulgarian": {
+    "google": "bg",
+    "tesseract": "bul"
+  },
+  "Catalan": {
+    "google": "ca",
+    "tesseract": "cat"
+  },
+  "Cebuano": {
+    "google": "ceb",
+    "tesseract": "ceb"
+  },
+  "Chinese (Simplified)": {
+    "google": "zh-CN",
+    "tesseract": "chi_sim+chi_sim_vert"
+  },
+  "Chinese (Traditional)": {
+    "google": "zh-TW",
+    "tesseract": "chi_tra+chi_tra_vert"
+  },
+  "Corsican": {
+    "google": "co",
+    "tesseract": "cos"
+  },
+  "Croatian": {
+    "google": "hr",
+    "tesseract": "hrv"
+  },
+  "Czech": {
+    "google": "cs",
+    "tesseract": "ces"
+  },
+  "Danish": {
+    "google": "da",
+    "tesseract": "dan"
+  },
+  "Dutch": {
+    "google": "nl",
+    "tesseract": "nld"
+  },
+  "English": {
+    "google": "en",
+    "tesseract": "eng"
+  },
+  "Esperanto": {
+    "google": "eo",
+    "tesseract": "epo"
+  },
+  "Estonian": {
+    "google": "et",
+    "tesseract": "est"
+  },
+  "Finnish": {
+    "google": "fi",
+    "tesseract": "fin"
+  },
+  "French": {
+    "google": "fr",
+    "tesseract": "fra"
+  },
+  "Frisian": {
+    "google": "fy",
+    "tesseract": "fry"
+  },
+  "Galician": {
+    "google": "gl",
+    "tesseract": "glg"
+  },
+  "Georgian": {
+    "google": "ka",
+    "tesseract": "kat"
+  },
+  "German": {
+    "google": "de",
+    "tesseract": "deu"
+  },
+  "Greek": {
+    "google": "el",
+    "tesseract": "ell"
+  },
+  "Gujarati": {
+    "google": "gu",
+    "tesseract": "guj"
+  },
+  "Haitian Creole": {
+    "google": "ht",
+    "tesseract": "hat"
+  },
+  "Hebrew": {
+    "google": "iw",
+    "tesseract": "heb"
+  },
+  "Hindi": {
+    "google": "hi",
+    "tesseract": "hin"
+  },
+  "Hungarian": {
+    "google": "hu",
+    "tesseract": "hun"
+  },
+  "Icelandic": {
+    "google": "is",
+    "tesseract": "isl"
+  },
+  "Irish": {
+    "google": "ga",
+    "tesseract": "gle"
+  },
+  "Italian": {
+    "google": "it",
+    "tesseract": "ita"
+  },
+  "Japanese": {
+    "google": "ja",
+    "tesseract": "jpn+jpn_vert",
+    "local": true,
+    "removeSpaces": true
+  },
+  "Javanese": {
+    "google": "jv",
+    "tesseract": "jav"
+  },
+  "Kannada": {
+    "google": "kn",
+    "tesseract": "kan"
+  },
+  "Kazakh": {
+    "google": "kk",
+    "tesseract": "kaz"
+  },
+  "Khmer": {
+    "google": "km",
+    "tesseract": "khm"
+  },
+  "Korean": {
+    "google": "ko",
+    "tesseract": "kor+kor_vert"
+  },
+  "Kyrgyz": {
+    "google": "ky",
+    "tesseract": "kir"
+  },
+  "Lao": {
+    "google": "lo",
+    "tesseract": "lao"
+  },
+  "Latin": {
+    "google": "la",
+    "tesseract": "lat"
+  },
+  "Latvian": {
+    "google": "lv",
+    "tesseract": "lav"
+  },
+  "Lithuanian": {
+    "google": "lt",
+    "tesseract": "lit"
+  },
+  "Luxembourgish": {
+    "google": "lb",
+    "tesseract": "ltz"
+  },
+  "Macedonian": {
+    "google": "mk",
+    "tesseract": "mkd"
+  },
+  "Malay": {
+    "google": "ms",
+    "tesseract": "msa"
+  },
+  "Maltese": {
+    "google": "mt",
+    "tesseract": "mlt"
+  },
+  "Maori": {
+    "google": "mi",
+    "tesseract": "mri"
+  },
+  "Mongolian": {
+    "google": "mn",
+    "tesseract": "mon"
+  },
+  "Myanmar (Burmese)": {
+    "google": "my",
+    "tesseract": "mya"
+  },
+  "Nepali": {
+    "google": "ne",
+    "tesseract": "nep"
+  },
+  "Norwegian": {
+    "google": "no",
+    "tesseract": "nor"
+  },
+  "Pashto": {
+    "google": "ps",
+    "tesseract": "pus"
+  },
+  "Persian": {
+    "google": "fa",
+    "tesseract": "fas"
+  },
+  "Polish": {
+    "google": "pl",
+    "tesseract": "pol"
+  },
+  "Portuguese (Portugal, Brazil)": {
+    "google": "pt",
+    "tesseract": "por"
+  },
+  "Punjabi": {
+    "google": "pa",
+    "tesseract": "pan"
+  },
+  "Romanian": {
+    "google": "ro",
+    "tesseract": "ron"
+  },
+  "Russian": {
+    "google": "ru",
+    "tesseract": "rus"
+  },
+  "Scots Gaelic": {
+    "google": "gd",
+    "tesseract": "gla"
+  },
+  "Serbian": {
+    "google": "sr",
+    "tesseract": "srp+srp_latn"
+  },
+  "Sindhi": {
+    "google": "sd",
+    "tesseract": "snd"
+  },
+  "Sinhala (Sinhalese)": {
+    "google": "si",
+    "tesseract": "sin"
+  },
+  "Slovak": {
+    "google": "sk",
+    "tesseract": "slk"
+  },
+  "Slovenian": {
+    "google": "sl",
+    "tesseract": "slv"
+  },
+  "Spanish": {
+    "google": "es",
+    "tesseract": "spa"
+  },
+  "Sundanese": {
+    "google": "su",
+    "tesseract": "sun"
+  },
+  "Swahili": {
+    "google": "sw",
+    "tesseract": "swa"
+  },
+  "Swedish": {
+    "google": "sv",
+    "tesseract": "swa"
+  },
+  "Tajik": {
+    "google": "tg",
+    "tesseract": "tgk"
+  },
+  "Tamil": {
+    "google": "ta",
+    "tesseract": "tam"
+  },
+  "Telugu": {
+    "google": "te",
+    "tesseract": "tel"
+  },
+  "Thai": {
+    "google": "th",
+    "tesseract": "tha"
+  },
+  "Turkish": {
+    "google": "tr",
+    "tesseract": "tur"
+  },
+  "Ukrainian": {
+    "google": "uk",
+    "tesseract": "ukr"
+  },
+  "Urdu": {
+    "google": "ur",
+    "tesseract": "urd"
+  },
+  "Uzbek": {
+    "google": "uz",
+    "tesseract": "uzb+uzb_cyrl"
+  },
+  "Vietnamese": {
+    "google": "vi",
+    "tesseract": "vie"
+  },
+  "Welsh": {
+    "google": "cy",
+    "tesseract": "cym"
+  },
+  "Yiddish": {
+    "google": "yi",
+    "tesseract": "yid"
+  },
+  "Yoruba": {
+    "google": "yo",
+    "tesseract": "yor"
+  }
+}

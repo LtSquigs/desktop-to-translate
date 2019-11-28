@@ -18,7 +18,7 @@ class App {
   constructor() {
     this.config              = new Configuration();
     this.configurationWindow = new ConfigurationWindow();
-    this.worker              = new Worker();
+    this.worker              = new Worker(this.config);
     this.snipperWindow       = new SnipperWindow();
     this.translatorWindow    = new TranslatorWindow(this.config);
 
@@ -83,6 +83,7 @@ class App {
     this.registerGlobalHotkeys();
 
     process.on('updated-config', () => {
+      this.worker.restart();
       this.registerGlobalHotkeys();
     });
   }
