@@ -1,7 +1,9 @@
 'use strict';
 
-const fs   = require('fs'),
-      path = require('path'),
+const fs               = require('fs'),
+      path             = require('path'),
+      https            = require('https'),
+      nodePackage      = require('../package.json'),
       { app, ipcMain } = require('electron');
 
 class Configuration {
@@ -17,6 +19,44 @@ class Configuration {
     }
 
     this.registerEventListeners();
+  }
+
+  getVersion() {
+    return nodePackage.releaseVersion;
+  }
+
+  checkVersion(callback) {
+    https.get(
+      'https://api.github.com/repos/ltsquigs/desktop-to-translate/releases/latest',
+      {
+        headers: {
+          'User-Agent': 'desktop-to-translate'
+        }
+      },
+      (res) => {
+        const { statusCode } = res;
+        const contentType = res.headers['content-type'];
+
+        if (statusCode !== 200) {
+          return;
+        }
+
+        res.setEncoding('utf8');
+        let rawData = '';
+
+        res.on('data', (chunk) => { rawData += chunk; });
+        res.on('end', () => {
+          try {
+            const parsedData = JSON.parse(rawData);
+            const version = parsedData.tag_name;
+            const link = parsedData.html_url;
+
+            callback(version, link);
+          } catch (e) {
+          }
+        });
+      }
+    );
   }
 
   updateConfig(key, value) {

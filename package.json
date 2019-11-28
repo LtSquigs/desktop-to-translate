@@ -2,6 +2,7 @@
   "name": "desktop-to-translate",
   "version": "1.0.0",
   "main": "main.js",
+  "releaseVersion": "1.0.0",
   "build": {
     "appId": "desktop.to.translate",
     "mac": {
@@ -25,6 +26,8 @@
   },
   "dependencies": {
     "bootstrap": "^4.3.1",
+    "compare-versions": "^3.5.1",
+    "open": "^7.0.0",
     "screenshot-desktop": "^1.10.0",
     "tesseract.js": "^2.0.0-beta.2"
   }

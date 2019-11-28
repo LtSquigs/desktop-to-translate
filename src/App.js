@@ -1,6 +1,8 @@
-const fs   = require('fs'),
-      path = require('path'),
-      { app, Menu, Tray, globalShortcut } = require('electron');
+const fs    = require('fs'),
+      path  = require('path'),
+      open  = require('open'),
+      compareVersions = require('compare-versions'),
+      { app, Menu, MenuItem, Tray, globalShortcut } = require('electron');
 
 const Configuration       = require('./Configuration'),
       ConfigurationWindow = require('./ConfigurationWindow'),
@@ -32,9 +34,20 @@ class App {
     tray = new Tray(path.join(app.getAppPath(), 'trans.png'));
 
     const contextMenu = Menu.buildFromTemplate([
+      { label: `Version: ${this.config.getVersion()}`, type: 'normal', enabled: false },
+      { type: 'separator' },
       { label: 'Configuration', type: 'normal', click: this.configurationWindow.show },
       { label: 'Quit', type: 'normal', click: this.close }
     ]);
+
+    this.config.checkVersion((version, link) => {
+      if (compareVersions.compare(version, this.config.getVersion(), '>')) {
+        contextMenu.insert(0, new MenuItem({ label: 'Get New Update', type: 'normal', click: () => {
+          open(link);
+        }}))
+        tray.setContextMenu(contextMenu);
+      }
+    });
 
     tray.setToolTip('Japanese -> English OCR');
     tray.setContextMenu(contextMenu);
