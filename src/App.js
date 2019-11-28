@@ -2,7 +2,7 @@ const fs    = require('fs'),
       path  = require('path'),
       open  = require('open'),
       compareVersions = require('compare-versions'),
-      { app, Menu, MenuItem, Tray, globalShortcut } = require('electron');
+      { app, ipcMain, Menu, MenuItem, Tray, globalShortcut } = require('electron');
 
 const Configuration       = require('./Configuration'),
       ConfigurationWindow = require('./ConfigurationWindow'),
@@ -61,8 +61,12 @@ class App {
     app.quit();
   }
 
-  registerGlobalHotkeys() {
+  removeGlobalListeners() {
     globalShortcut.unregisterAll();
+  }
+
+  registerGlobalHotkeys() {
+    this.removeGlobalListeners();
 
     if (this.config.readConfig('hotkey')) {
       globalShortcut.register(this.config.readConfig('hotkey'), () => {
@@ -81,6 +85,14 @@ class App {
 
   registerEventListeners() {
     this.registerGlobalHotkeys();
+
+    ipcMain.on('stop-hotkeys', () => {
+      this.removeGlobalListeners();
+    })
+
+    ipcMain.on('start-hotkeys', () => {
+      this.registerGlobalHotkeys();
+    })
 
     process.on('updated-config', () => {
       this.worker.restart();

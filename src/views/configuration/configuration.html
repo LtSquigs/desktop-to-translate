@@ -202,6 +202,8 @@
           e.preventDefault();
 
           if(recording) {
+            ipcRenderer.send('start-hotkeys');
+
             button.classList.remove('btn-warning');
             button.classList.add('btn-primary');
             button.textContent = 'Record';
@@ -209,6 +211,8 @@
             document.removeEventListener('keydown', recordCombo);
             recording = false;
           } else {
+            ipcRenderer.send('stop-hotkeys');
+
             button.classList.remove('btn-primary');
             button.classList.add('btn-warning');
             button.textContent = 'Stop';
