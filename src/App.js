@@ -33,7 +33,7 @@ class App {
   }
 
   async ready() {
-    tray = new Tray(path.join(app.getAppPath(), 'trans.png'));
+    tray = new Tray(path.join(app.getAppPath(), 'build', 'icon.png'));
 
     const contextMenu = Menu.buildFromTemplate([
       { label: `Version: ${this.config.getVersion()}`, type: 'normal', enabled: false },
@@ -52,7 +52,7 @@ class App {
       }
     });
 
-    tray.setToolTip('Japanese -> English OCR');
+    tray.setToolTip('Desktop To Translate');
     tray.setContextMenu(contextMenu);
 
     await this.worker.initialize();
