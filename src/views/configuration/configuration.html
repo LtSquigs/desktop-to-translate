@@ -279,7 +279,7 @@
       const sourceLanguage = config.sourceLanguage;
       const sourceLanguageSelector = document.querySelector('#source-language');
 
-      Object.keys(languages).forEach(language => {
+      for(let language of Object.keys(languages)) {
         const option = document.createElement('option');
         option.value = language;
         option.textContent = language;
@@ -289,7 +289,7 @@
         }
 
         sourceLanguageSelector.appendChild(option);
-      });
+      };
 
       sourceLanguageSelector.addEventListener('change', (e) => {
         const newLanguage = e.target.value;
@@ -303,7 +303,7 @@
       const targetLanguage = config.targetLanguage;
       const targetLanguageSelector = document.querySelector('#target-language');
 
-      Object.keys(languages).forEach(language => {
+      for(let language of Object.keys(languages)) {
         const option = document.createElement('option');
         option.value = language;
         option.textContent = language;
@@ -313,7 +313,7 @@
         }
 
         targetLanguageSelector.appendChild(option);
-      });
+      };
 
       targetLanguageSelector.addEventListener('change', (e) => {
         const newLanguage = e.target.value;
