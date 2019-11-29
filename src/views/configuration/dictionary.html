@@ -25,6 +25,18 @@
         display: none;
       }
 
+      .saved {
+        opacity: 0;
+      }
+
+      .saved.fadeinout {
+        animation: fading 1.5s linear;
+      }
+
+      @keyframes fading {
+        0%,100% { opacity: 0 }
+        50% { opacity: 1 }
+      }
     </style>
   </head>
   <body>
@@ -51,6 +63,9 @@
         <div class="form-row">
           <div class="col-12">
             <button class="btn btn-success" id="save-button">Save</button>
+            <small class="text-muted pl-2 saved">
+              Saved
+            </small>
           </div>
         </div>
       </form>
@@ -81,6 +96,7 @@
 
       const dictionaryContainer = document.querySelector('#dictionary-container');
       const dictionaryRow = document.querySelector('#dictionary-row-template');
+      const saveText = document.querySelector('.saved');
 
       function addRow(from, to) {
         const rowClone = document.importNode(dictionaryRow.content, true);
@@ -135,7 +151,13 @@
           key: 'customDictionary',
           value: newDict
         });
+
+        saveText.classList.add('fadeinout');
       }
+
+      saveText.addEventListener("animationend", () => {
+        saveText.classList.remove('fadeinout');
+      }, true);
 
       document.querySelector('#save-button').addEventListener('click', (e) => {
         e.preventDefault();
