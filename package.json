@@ -15,13 +15,17 @@
       "extendInfo": {
         "LSUIElement": 1
       }
+    },
+    "win": {
+      "target": "portable",
+      "icon": "build/ic_translate_black_48dp_large.png"
     }
   },
   "postinstall": "electron-builder install-app-deps",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder -mw"
   },
   "devDependencies": {
     "electron": "^7.1.0",
