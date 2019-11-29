@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "main": "main.js",
   "releaseVersion": "1.0.0",
+  "author": "ltsquigs",
+  "description": "Desktop application to OCR text and automatically send it to Google Translate" ,
   "build": {
     "appId": "desktop.to.translate",
     "mac": {
       "target": "dmg",
-      "category": "desktop.translation",
+      "category": "public.app-category.utilities",
       "identity": null,
+      "icon": "build/ic_translate_black_48dp_large.png",
       "extendInfo": {
         "LSUIElement": 1
       }
@@ -21,8 +24,9 @@
     "dist": "electron-builder"
   },
   "devDependencies": {
+    "electron": "^7.1.0",
     "electron-builder": "^21.2.0",
-    "electron": "^7.1.0"
+    "material-design-icons": "^3.0.1"
   },
   "dependencies": {
     "bootstrap": "^4.3.1",

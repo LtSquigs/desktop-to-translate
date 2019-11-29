@@ -2,7 +2,7 @@ const fs    = require('fs'),
       path  = require('path'),
       open  = require('open'),
       compareVersions = require('compare-versions'),
-      { app, ipcMain, Menu, MenuItem, Tray, globalShortcut } = require('electron');
+      { app, ipcMain, Menu, MenuItem, Tray, globalShortcut, nativeImage } = require('electron');
 
 const Configuration       = require('./Configuration'),
       ConfigurationWindow = require('./ConfigurationWindow'),
@@ -12,7 +12,7 @@ const Configuration       = require('./Configuration'),
       TranslatorWindow    = require('./TranslatorWindow');
 
 // Need to globally define this or else it gets garbage collected
-// which deletes the notification bar
+// which deletes the tray entirely
 let tray = null;
 
 class App {
@@ -33,7 +33,9 @@ class App {
   }
 
   async ready() {
-    tray = new Tray(path.join(app.getAppPath(), 'build', 'icon.png'));
+    const image = nativeImage.createFromPath(path.join(app.getAppPath(), 'ic_translate_black_48dp.png'));
+
+    tray = new Tray(image.resize({ width: 18, height: 18 }));
 
     const contextMenu = Menu.buildFromTemplate([
       { label: `Version: ${this.config.getVersion()}`, type: 'normal', enabled: false },
