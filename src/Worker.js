@@ -18,12 +18,19 @@ class Worker {
       const image = await screenshot();
       const data = await this.recognize(image, bounds);
       const text = data.data.text;
-
       const textNoSpaces = data.data.lines.map(line => {
         return line.words.map(word => word.text).join('');
       }).join('\n');
 
-      process.emit('tesseract-scanned', this.sourceLanguage.removeSpaces ? textNoSpaces : text);
+      let finalText = this.sourceLanguage.removeSpaces ? textNoSpaces : text;
+
+      const customDictionary = this.config.readConfig('customDictionary');
+
+      for(let entry of customDictionary) {
+        finalText = finalText.replace(entry[0], entry[1]);
+      }
+
+      process.emit('tesseract-scanned', finalText);
     })
   }
 

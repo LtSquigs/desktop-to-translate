@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css"></link>
+    <style>
+      .dictionary-row .remove-row-container {
+      //  display: none;
+      }
+
+      .dictionary-row .add-row-container {
+        display: none;
+      }
+
+      .dictionary-row:last-child .remove-row-container {
+        display: block;
+      }
+
+      .dictionary-row:last-child .add-row-container {
+        display: block;
+      }
+
+      .dictionary-row:last-child.dictionary-row:first-child .remove-row-container {
+        display: none;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container mt-3">
+      <h2>Custom Dictionary</h2>
+      <div class="row">
+        <div class="col-12">
+          <small class="text-muted">
+            Word pairs added to this list will be replaced in the scanned text before being sent to Google Translate.
+          </small>
+        </div>
+      </div>
+      <form>
+        <div class="form-row mt-3">
+          <div class="col-5">
+            <h5>From</h5>
+          </div>
+          <div class="col-5">
+            <h5>To</h5>
+          </div>
+        </div>
+        <div id="dictionary-container">
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+            <button class="btn btn-success" id="save-button">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <template id="dictionary-row-template">
+      <div class="form-group form-row dictionary-row">
+        <div class="col-5">
+          <input type="text" class="from-text form-control">
+        </div>
+        <div class="col-5">
+          <input type="text" class="to-text form-control">
+        </div>
+        <div class="col-1 remove-row-container">
+          <button type="submit" class="btn btn-danger remove-row">-</button>
+        </div>
+        <div class="col-1 add-row-container">
+          <button type="submit" class="btn btn-success add-row">+</button>
+        </div>
+      </div>
+    </template>
+    <script>
+      const { ipcRenderer } = require('electron');
+      const languages = require('../../../languages.json');
+
+      const config = ipcRenderer.sendSync('get-config');
+      const dictionary = config.customDictionary || [];
+
+      const dictionaryContainer = document.querySelector('#dictionary-container');
+      const dictionaryRow = document.querySelector('#dictionary-row-template');
+
+      function addRow(from, to) {
+        const rowClone = document.importNode(dictionaryRow.content, true);
+        const appendedNode = dictionaryContainer.appendChild(rowClone.children[0]);
+
+        appendedNode.querySelector('.add-row').addEventListener('click', (e) => {
+          e.preventDefault();
+
+          addRow();
+        });
+
+        appendedNode.querySelector('.remove-row').addEventListener('click', (e) => {
+          e.preventDefault();
+
+          removeRow(appendedNode);
+        });
+
+        if (from) {
+          appendedNode.querySelector('.from-text').value = from;
+          appendedNode.querySelector('.to-text').value = to;
+        }
+      }
+
+      function removeRow(appendedNode) {
+        appendedNode.remove();
+      }
+
+      function renderDictionary() {
+        if (dictionary.length == 0) { //empty dict == 1 row
+          addRow();
+        } else {
+          for(let pair of dictionary) {
+            addRow(pair[0], pair[1]);
+          }
+        }
+      }
+
+      function saveDictionary() {
+        const rows = dictionaryContainer.querySelectorAll('.dictionary-row');
+        const newDict = [];
+
+        for(let row of rows) {
+          const from = row.querySelector('.from-text').value.trim();
+          const to = row.querySelector('.to-text').value.trim();
+
+          if(from) { // make sure from is real
+            newDict.push([from, to])
+          }
+        }
+
+        ipcRenderer.send('update-config', {
+          key: 'customDictionary',
+          value: newDict
+        });
+      }
+
+      document.querySelector('#save-button').addEventListener('click', (e) => {
+        e.preventDefault();
+
+        saveDictionary();
+      });
+
+      renderDictionary();
+    </script>
+  </body>
+</html>

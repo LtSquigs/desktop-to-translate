@@ -6,6 +6,7 @@ const fs    = require('fs'),
 
 const Configuration       = require('./Configuration'),
       ConfigurationWindow = require('./ConfigurationWindow'),
+      DictionaryWindow    = require('./DictionaryWindow'),
       SnipperWindow       = require('./SnipperWindow'),
       Worker              = require('./Worker'),
       TranslatorWindow    = require('./TranslatorWindow');
@@ -18,6 +19,7 @@ class App {
   constructor() {
     this.config              = new Configuration();
     this.configurationWindow = new ConfigurationWindow();
+    this.dictionaryWindow    = new DictionaryWindow();
     this.worker              = new Worker(this.config);
     this.snipperWindow       = new SnipperWindow();
     this.translatorWindow    = new TranslatorWindow(this.config);
@@ -37,6 +39,7 @@ class App {
       { label: `Version: ${this.config.getVersion()}`, type: 'normal', enabled: false },
       { type: 'separator' },
       { label: 'Configuration', type: 'normal', click: this.configurationWindow.show },
+      { label: 'Custom Dictionary', type: 'normal', click: this.dictionaryWindow.show },
       { label: 'Quit', type: 'normal', click: this.close }
     ]);
 
