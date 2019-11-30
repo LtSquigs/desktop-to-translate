@@ -1,3 +1,6 @@
 [submodule "rikaikun"]
 	path = rikaikun
 	url = https://github.com/melink14/rikaikun
+[submodule "src/views/translator/rikaikun"]
+	path = src/views/translator/rikaikun
+	url = git@github.com:melink14/rikaikun.git

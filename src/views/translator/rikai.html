@@ -8,8 +8,6 @@
     <script src="rikaikun/rikaichan.js"></script>
     <script src="rikaikun/background.js"></script>
     <script src="rikaikun/rikaicontent.js"></script>
-    <script type="text/javascript">
-    </script>
   </head>
   <body>
     <div id='jpText'></div>
@@ -18,7 +16,7 @@
 
       const jpText = document.querySelector('#jpText');
 
-      jpText.innerText =  (new URL(document.location)).searchParams.get('text');
+      jpText.innerText = (new URL(document.location)).searchParams.get('text');
 
       window.onload = () => {
         const textHeight = jpText.offsetHeight;

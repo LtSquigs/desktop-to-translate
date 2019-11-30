@@ -59,7 +59,7 @@ let modifyDom = () => {
 function injectScript(script) {
   const scriptEle = document.createElement('script');
 
-  script = path.join(appDir, script);
+  script = path.join(appDir, 'src', 'views', 'translator', script);
 
   scriptEle.appendChild(document.createTextNode(fs.readFileSync(script).toString()));
 
@@ -73,7 +73,7 @@ process.once('loaded', () => {
     // it uses getUrl from the chrome API to do this, this little function overrides it
     // in order to create an Object URL
     window.overrideGetURL = (uri) => {
-      const file = fs.readFileSync(path.join(appDir, 'rikaikun', uri));
+      const file = fs.readFileSync(path.join(appDir, 'src', 'views', 'translator', 'rikaikun', uri));
       const blob = new Blob([file.toString()]);
       const url = URL.createObjectURL(blob);
       return url;
@@ -81,14 +81,32 @@ process.once('loaded', () => {
 
     // Only inject Rikai Kun if were in the google rikai view
     if (config.view === 'google+rikai') {
-      injectScript('src/views/translator/chrome-api-polyfill.js');
+      injectScript('chrome-api-polyfill.js');
       injectScript('rikaikun/data.js');
       injectScript('rikaikun/rikaichan.js');
       injectScript('rikaikun/background.js');
       injectScript('rikaikun/rikaicontent.js');
 
       const scriptEle = document.createElement('script');
-      scriptEle.appendChild(document.createTextNode(`rcxMain.config.showOnKey = '${config.rikaiHotkey}'; rcxMain.config.minihelp = false; rcxMain.inlineToggle({ id: 0 });`));
+
+      // Little bootstrap code to load Rikaikun
+      scriptEle.appendChild(document.createTextNode(`
+        const oldProcess = rcxContent.processEntry;
+
+        // rikakun leaks scope on a minified variable that happens to destroy google translate
+        // this little snippit protects it
+        rcxContent.processEntry = function (e) {
+          const oldRp = rp;
+
+          oldProcess.call(this, e)
+
+          rp = oldRp;
+        };
+
+        rcxMain.config.showOnKey = '${config.rikaiHotkey}';
+        rcxMain.config.minihelp = false;
+        rcxMain.inlineToggle({ id: 0 });
+      `));
 
       document.body.appendChild(scriptEle);
     }
