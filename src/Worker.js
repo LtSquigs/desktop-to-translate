@@ -27,7 +27,8 @@ class Worker {
       const customDictionary = this.config.readConfig('customDictionary');
 
       for(let entry of customDictionary) {
-        finalText = finalText.replace(entry[0], entry[1]);
+        // We use this instead of a regular replace so that its global, and we avoid regex/unicode complications
+        finalText = finalText.split(entry[0]).join(entry[1]);
       }
 
       process.emit('tesseract-scanned', finalText);
