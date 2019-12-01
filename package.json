@@ -6,6 +6,7 @@
   "author": "ltsquigs",
   "description": "Desktop application to OCR text and automatically send it to Google Translate" ,
   "build": {
+    "productName": "Desktop To Translate",
     "appId": "desktop.to.translate",
     "mac": {
       "target": "dmg",
