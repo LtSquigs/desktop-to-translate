@@ -18,7 +18,8 @@
       }
     },
     "win": {
-      "target": "portable",
+      "asar": false,
+      "target": "nsis",
       "icon": "build/ic_translate_black_48dp_large.png"
     }
   },

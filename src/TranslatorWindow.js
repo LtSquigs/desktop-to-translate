@@ -7,7 +7,7 @@ const WIDTH = 520,
       HEIGHT = 480,
       MIN_HEIGHT = 325,
       PADDING = 20,
-      SCAN_WIDTH = 135,
+      SCAN_WIDTH = 165,
       SCAN_HEIGHT = 25;
 
 class TranslatorWindow {

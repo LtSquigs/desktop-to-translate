@@ -33,7 +33,13 @@ class App {
   }
 
   async ready() {
-    const image = nativeImage.createFromPath(path.join(app.getAppPath(), 'ic_translate_black_48dp.png'));
+    let image = null;
+
+    if(process.platform === 'win32') {
+      image = nativeImage.createFromPath(path.join(app.getAppPath(), 'ic_translate_black_48dp_white.png'));
+    } else {
+      image = nativeImage.createFromPath(path.join(app.getAppPath(), 'ic_translate_black_48dp.png'));
+    }
 
     tray = new Tray(image.resize({ width: 18, height: 18 }));
 
