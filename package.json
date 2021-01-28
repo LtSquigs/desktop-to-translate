@@ -30,7 +30,7 @@
     "dist": "electron-builder -mw"
   },
   "devDependencies": {
-    "electron": "^7.2.4",
+    "electron": "^9.4.0",
     "electron-builder": "^21.2.0",
     "material-design-icons": "^3.0.1"
   },
