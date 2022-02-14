@@ -4,33 +4,336 @@
     <meta charset="UTF-8">
     <title>Rikai-Kun Only</title>
     <script src="chrome-api-polyfill.js"></script>
-    <script src="rikaikun/data.js"></script>
+    <!-- <script src="rikaikun/data.js"></script>
     <script src="rikaikun/rikaichan.js"></script>
     <script src="rikaikun/background.js"></script>
-    <script src="rikaikun/rikaicontent.js"></script>
+    <script src="rikaikun/rikaicontent.js"></script> -->
+    <style>
+      .pos {
+        cursor: pointer;
+        border-radius: 0.25rem;
+        padding-left: 0.125rem;
+        padding-right: 0.125rem;
+        padding-bottom: 0.125rem;
+        padding-top: 0.125rem;
+        font-family: "Source Sans Pro", ui-sans-serif, system-ui;
+        line-height: 2rem;
+        font-size: 16px;
+        border: 0 solid;
+        box-sizing: border-box;
+        border-color: rgb(229, 231, 235);
+      }
+      .small-pos {
+        font-weight: 600;
+        font-size: .75rem;
+        line-height: 1rem;
+        border-radius: 0.25rem;
+        padding-left: 0.125rem;
+        padding-right: 0.125rem;
+        margin-left: .25rem;
+        box-sizing: border-box;
+      }
+      .determiner {
+        color: rgb(91, 33, 182);
+        background-color: rgb(237, 233, 254);
+      }
+      .determiner .small-pos {
+        color: rgb(237, 233, 254);
+        background-color: rgb(139, 92, 246);
+      }
+      .adjective {
+        color: rgb(157, 23, 77);
+        background-color: rgb(252, 231, 243);
+      }
+      .adjective .small-pos {
+        color: rgb(252, 231, 243);
+        background-color: rgb(236, 72, 153);
+      }
+      .prefix {
+        color: rgb(7, 89, 133);
+        background-color: rgb(224, 242, 254);
+      }
+      .prefix .small-pos {
+        color: rgb(224, 242, 254);
+        background-color: rgb(14, 165, 233);
+      }
+      .noun {
+        color: rgb(20, 184, 166);
+        background-color: rgb(204, 251, 241)
+      }
+      .noun .small-pos {
+        color: rgb(204, 251, 241);
+        background-color: rgb(20, 184, 166);
+      }
+      .verb {
+        color: rgb(157, 23, 77);
+        background-color: rgb(252, 231, 243);
+      }
+      .verb .small-pos {
+        color: rgb(252, 231, 243);
+        background-color: rgb(236, 72, 153);
+      }
+      .adverb {
+        color: rgb(7, 89, 133);
+        background-color: rgb(224, 242, 254);
+      }
+      .adverb .small-pos {
+        color: rgb(224, 242, 254);
+        background-color: rgb(14, 165, 233);
+      }
+      .conjunction {
+        color: rgb(7, 89, 133);
+        background-color: rgb(224, 242, 254);
+      }
+      .conjunction .small-pos {
+        color: rgb(224, 242, 254);
+        background-color: rgb(14, 165, 233);
+      }
+      .particle {
+        color: rgb(91, 33, 182);
+        background-color: rgb(237, 233, 254);
+      }
+      .particle .small-pos {
+        color: rgb(237, 233, 254);
+        background-color: rgb(139, 92, 246);
+      }
+      .auxiliary {
+        color: rgb(134, 25, 143);
+        background-color: rgb(250, 232, 255);
+      }
+      .auxiliary .small-pos {
+        color: rgb(250, 232, 255);
+        background-color: rgb(217, 70, 239);
+      }
+      .interjection {
+        color: rgb(7, 89, 133);
+        background-color: rgb(224, 242, 254);
+      }
+      .interjection .small-pos {
+        color: rgb(224, 242, 254);
+        background-color: rgb(14, 165, 233);
+      }
+      .symbol {
+        color: rgb(154, 52, 18);
+        background-color: rgb(255, 237, 213);
+      }
+      .symbol .small-pos {
+        color: rgb(255, 237, 213);
+        background-color: rgb(249, 115, 22);
+      }
+      .filler {
+        color: rgb(7, 89, 133);
+        background-color: rgb(224, 242, 254);
+      }
+      .filler .small-pos {
+        color: rgb(224, 242, 254);
+        background-color: rgb(14, 165, 233);
+      }
+      .other {
+        color: rgb(154, 52, 18);
+        background-color: rgb(255, 237, 213);
+      }
+      .other .small-pos {
+        color: rgb(255, 237, 213);
+        background-color: rgb(249, 115, 22);
+      }
+      .unknown {
+        color: rgb(7, 89, 133);
+        background-color: rgb(224, 242, 254);
+      }
+      .unknown .small-pos {
+        color: rgb(224, 242, 254);
+        background-color: rgb(14, 165, 233);
+      }
+      #jisho-frame {
+        border: 0;
+        width: 100%;
+        height: 600px;
+      }
+    </style>
   </head>
   <body>
     <div id='jpText'></div>
+    <iframe src="" id="jisho-frame" style="display: none"></iframe>
+    <script>
+      const categories = {
+        "連体詞": {
+            "pos": "determiner",
+            "jisho": "adjective",
+            "inner": "DET"
+        },
+        "接頭詞": {
+            "pos": "prefix",
+            "jisho": "pref",
+            "inner": "PRE"
+        },
+        "名詞": {
+            "pos": "noun",
+            "jisho": "n",
+            "inner": "NOUN"
+        },
+        "動詞": {
+            "pos": "verb",
+            "jisho": "verb",
+            "inner": "VERB"
+        },
+        "形容詞": {
+            "pos": "adjective",
+            "jisho": "adjective",
+            "inner": "ADJ"
+        },
+        "副詞": {
+            "pos": "adverb",
+            "jisho": "adv",
+            "inner": "ADV"
+        },
+        "接続詞": {
+            "pos": "conjunction",
+            "jisho": "conj",
+            "inner": "CONJ"
+        },
+        "助詞": {
+            "pos": "particle",
+            "jisho": "prt",
+            "inner": "PART"
+        },
+        "助動詞": {
+            "pos": "auxiliary",
+            "jisho": "aux",
+            "inner": "AUX"
+        },
+        "感動詞": {
+            "pos": "interjection",
+            "jisho": "int",
+            "inner": "INT"
+        },
+        "記号": {
+            "pos": "symbol",
+            "jisho": "",
+            "inner": "PUNCT"
+        },
+        "フィラー": {
+            "pos": "filler",
+            "jisho": "",
+            "inner": "FILL"
+        },
+        "その他": {
+            "pos": "other",
+            "jisho": "",
+            "inner": "OTHER"
+        },
+        "未知語": {
+            "pos": "unknown",
+            "jisho": "",
+            "inner": "UNK"
+        }
+    };
+    </script>
     <script>
       const { ipcRenderer } = require('electron');
+      const MeCab = require('mecab-async');
+      const path = require('path');
 
       const jpText = document.querySelector('#jpText');
 
-      jpText.innerText = (new URL(document.location)).searchParams.get('text');
+      const text = (new URL(document.location)).searchParams.get('text');
+
+      const mecab = new MeCab();
+      mecab.parse(text, function(err, result) {
+        if (err) throw err;
+        for(let i = 0; i < result.length; i++) {
+            const part = result[i];
+            const word = part[0];
+            const pos = part[1];
+
+            let span = document.createElement('span');
+            span.innerHTML = word;
+            span.className = categories[pos].pos + " pos" ;
+            let innerSpan = document.createElement('span');
+            innerSpan.className = 'small-pos';
+            innerSpan.innerHTML = categories[pos].inner;
+            span.appendChild(innerSpan);
+            jpText.appendChild(span);
+
+            let searchWord = word;
+            let curPos = pos;
+            // Get prefixes and auxs
+            for(let j = i - 1; j >= 0; j--) {
+              const prevPart = result[j];
+              const prevWord = prevPart[0];
+              const prevPos = prevPart[1]
+              // If we have a prefix before us, add it in
+              if (categories[prevPos].pos === "prefix") {
+                searchWord = prevWord + searchWord;
+                curPos = prevPos;
+                continue;
+              }
+              // If we are an auxiliary and we follow a verb, add int that verb
+              if (categories[curPos].pos === "auxiliary" && categories[prevPos].pos === "verb") {
+                searchWord = prevWord + searchWord;
+                curPos = prevPos;
+                continue;
+              }
+
+              // If we hit not a prefix or not an verb as an aux then break the loop
+              break;
+            }
+            curPos = pos;
+            // Get auxs and future words if your a prefix
+            for(let j = i + 1; j < result.length; j++) {
+              const nextPart = result[j];
+              const nextWord = nextPart[0];
+              const nextPos = nextPart[1]
+              // If we have an auxiliary ahead of us and we are a verb
+              if (categories[nextPos].pos === "auxiliary"&& categories[curPos].pos === "verb") {
+                searchWord = searchWord + nextWord;
+                curPos = nextPos;
+                continue;
+              }
+              // If we are a prefix, just add whatever comes next
+              if (categories[curPos].pos === "prefix") {
+                searchWord = searchWord + nextWord;
+                curPos = nextPos;
+                continue;
+              }
+              break;
+            }
+
+            span.addEventListener("click", (e) => {
+              const jFrame = document.querySelector('#jisho-frame');
+              jFrame.src = `https://jisho.org/search/${searchWord}`;
+              jFrame.style = "";
+              // if(categories[pos].jisho) {
+              //   window.open(`https://jisho.org/search/${word}%20%23${categories[pos].jisho}`)
+              // } else {
+              //   window.open(`https://jisho.org/search/${word}`)
+              // }
+              const textHeight = jpText.offsetHeight;
+              ipcRenderer.send('translator-resize', textHeight + 620) ;// + 300);
+            })
+            // Pre and Aux should be in one set of things
+        }
+
+        const textHeight = jpText.offsetHeight;
+            console.log(textHeight);
+        ipcRenderer.send('translator-opened', textHeight + 20) ;// + 300);
+      });
 
       window.onload = () => {
-        const textHeight = jpText.offsetHeight;
+          const textHeight = jpText.offsetHeight;
+          if (textHeight) {
+            console.log(textHeight);
+            // This extra height here is to give space for the rikai window to show
+            ipcRenderer.send('translator-opened', textHeight + 20);// + 300);
+          }
+        }
 
-        // This extra height here is to give space for the rikai window to show
-        ipcRenderer.send('translator-opened', textHeight + 300);
-      }
+      // const config = ipcRenderer.sendSync('get-config');
 
-      const config = ipcRenderer.sendSync('get-config');
+      // rcxMain.config.showOnKey = config.rikaiHotkey;
+      // rcxMain.config.minihelp = false;
 
-      rcxMain.config.showOnKey = config.rikaiHotkey;
-      rcxMain.config.minihelp = false;
-
-      rcxMain.inlineToggle({ id: 0 });
+      // rcxMain.inlineToggle({ id: 0 });
     </script>
   </body>
 </html>

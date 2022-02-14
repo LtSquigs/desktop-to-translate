@@ -25,7 +25,8 @@ class ConfigurationWindow {
       resizable: true,
       autoHideMenuBar: true,
       webPreferences: {
-        nodeIntegration: true
+        nodeIntegration: true,
+        contextIsolation: false
       }
     });
 

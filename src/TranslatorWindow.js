@@ -3,7 +3,7 @@ const { app, BrowserWindow, ipcMain, screen } = require('electron'),
       path = require('path'),
       languages  = require('../languages.json');
 
-const WIDTH = 520,
+const WIDTH = 650,
       HEIGHT = 480,
       MIN_HEIGHT = 325,
       PADDING = 20,
@@ -32,6 +32,10 @@ class TranslatorWindow {
 
     ipcMain.on('translator-opened', (event, arg) => {
       this.showTranslator(event, arg)
+    });
+
+    ipcMain.on('translator-resize', (event, arg) => {
+      this.translatorWindow.setContentSize(WIDTH, arg);
     });
   }
 
@@ -97,6 +101,7 @@ class TranslatorWindow {
       webPreferences: {
         enableRemoteModule: rikaiMode ? true : false,
         nodeIntegration: rikaiMode ? true : false,
+        contextIsolation: rikaiMode ? false : true,
         preload: !rikaiMode ? path.join(app.getAppPath(), 'src', 'views', 'translator', 'injection.js') : null
       }
     })

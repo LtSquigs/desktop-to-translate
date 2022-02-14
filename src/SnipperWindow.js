@@ -47,7 +47,8 @@ class SnipperWindow {
         alwaysOnTop: false,
         autoHideMenuBar: true,
         webPreferences: {
-          nodeIntegration: true
+          nodeIntegration: true,
+          contextIsolation: false
         }
     });
 

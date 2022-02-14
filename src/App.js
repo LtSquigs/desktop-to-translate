@@ -35,13 +35,13 @@ class App {
   async ready() {
     let image = null;
 
-    if(process.platform === 'win32') {
+    //if(process.platform === 'win32') {
       image = nativeImage.createFromPath(path.join(app.getAppPath(), 'ic_translate_black_48dp_white.png'));
-    } else {
-      image = nativeImage.createFromPath(path.join(app.getAppPath(), 'ic_translate_black_48dp.png'));
-    }
+    // } else {
+    //   image = nativeImage.createFromPath(path.join(app.getAppPath(), 'ic_translate_black_48dp.png'));
+    // }
 
-    tray = new Tray(image.resize({ width: 18, height: 18 }));
+    tray = new Tray(image.resize({ width: 16, height: 16 }));
 
     const contextMenu = Menu.buildFromTemplate([
       { label: `Version: ${this.config.getVersion()}`, type: 'normal', enabled: false },
